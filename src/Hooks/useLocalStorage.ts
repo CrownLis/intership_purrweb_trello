@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import StorageService from '../Service/storage';
 
-function useLocalStorage<V = any>(key: string, initialValue: V) {
-  const resolvedInitialValue: V = useMemo(() => {
+function useLocalStorage<T = any>(key: string, initialValue?: T) {
+  const resolvedInitialValue: T = useMemo(() => {
     if (typeof window === 'undefined') {
       return initialValue;
     }
@@ -11,7 +11,9 @@ function useLocalStorage<V = any>(key: string, initialValue: V) {
       if (item !== null) {
         return item;
       } else {
-        StorageService.setItem(key, initialValue);
+        if (initialValue) {
+          StorageService.setItem(key, initialValue);
+        }
         return initialValue;
       }
     } catch (error) {
@@ -20,7 +22,17 @@ function useLocalStorage<V = any>(key: string, initialValue: V) {
     }
   }, [initialValue, key]);
   const [storedValue, setStoredValue] = useState(resolvedInitialValue);
-  const setValue = (value: V) => {
+
+  const listener = (e: any) => {
+    if (e.key === key) setValue(JSON.parse(e.newValue));
+  };
+
+  useEffect(() => {
+    window.addEventListener('storage', listener);
+    return () => window.removeEventListener('storage', listener);
+  }, []);
+
+  const setValue = (value: T) => {
     try {
       setStoredValue(value);
       if (typeof window !== 'undefined') {

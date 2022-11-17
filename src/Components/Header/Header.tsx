@@ -1,6 +1,22 @@
-import { FC } from "react"
+import { FC, useContext } from "react"
 import styled from "styled-components"
+import useSelector from "../../store/hooks"
+import { selectors } from "../../store/store"
 
+const Header: FC = () => {
+
+const user = useSelector(selectors.user.selectUser())
+
+    return (
+        <StyledHeader>
+            <StyledTitle>
+               {user? `Приветствую ${user.name}` : 'Авторизуйтесь'}
+            </StyledTitle>
+        </StyledHeader>
+    )
+}
+
+export default Header
 
 const StyledHeader = styled.header`
 width:100%;
@@ -13,19 +29,3 @@ color:white;
 text-align:center;
 padding:6px;
 `
-
-type HeaderProps = {
-    userName?: string;
-}
-
-const Header: FC<HeaderProps> = ({ userName }) => {
-    return (
-        <StyledHeader>
-            <StyledTitle>
-               {userName? `Приветствую ${userName}` : 'Авторизуйтесь'}
-            </StyledTitle>
-        </StyledHeader>
-    )
-}
-
-export default Header

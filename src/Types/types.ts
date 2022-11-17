@@ -1,30 +1,32 @@
-export interface IData {
-  user: IUser | null;
-  columns: IColumn[];
-  cards: ICard[];
-  comments: IComment[];
-}
+export type DataType = {
+  user: UserType | null;
+  columns: ColumnType[];
+  cards: CardType[];
+  comments: CommentType[];
+};
 
-export interface IColumn {
+export type ColumnType = {
   id: number;
   name: string;
-}
+};
 
-export interface ICard {
+export type CardType = {
   columnId: number;
   id: number;
   name: string;
   description: string;
   author: string;
-}
+};
 
-export interface IComment {
+export type CommentType = {
   cardId: number;
   id: number;
   text: string;
   author: string;
-}
+};
 
-export interface IUser {
+export type UserType = {
   name: string;
-}
+};
+
+export type State = DataType;

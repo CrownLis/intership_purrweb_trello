@@ -7,7 +7,13 @@ class StorageService {
     else return null;
   }
   setItem<V = any>(key: string, value: V) {
-    Storage.setItem(key, JSON.stringify(value));
+    const newValue = JSON.stringify(value);
+    Storage.setItem(key, newValue);
+    const event = new StorageEvent('storage', {
+      key,
+      newValue
+    });
+    window.dispatchEvent(event);
   }
   removeItem = (key: string) => {
     Storage.removeItem(key);
