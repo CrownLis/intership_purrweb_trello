@@ -3,10 +3,10 @@ import styled from "styled-components"
 
 type modalProps = PropsWithChildren<{
     showPopup?: boolean;
-    onClose:() => void;
+    onClose: () => void;
 }>;
 
-const ModalWindow: FC<modalProps> = ({showPopup,onClose,children}) => {
+const ModalWindow: FC<modalProps> = ({ showPopup, onClose, children }) => {
 
     const closeOnEscapeKeyDown = useCallback((e: { charCode: any; keyCode: any; }) => {
         if ((e.charCode || e.keyCode) === 27) {
@@ -22,9 +22,9 @@ const ModalWindow: FC<modalProps> = ({showPopup,onClose,children}) => {
     }, [closeOnEscapeKeyDown]);
 
 
-    return  (
-        <ModalStyled style={showPopup ? { transform: 'scale(1)' } : { transform: 'scale(0)' }} onKeyDown={e =>closeOnEscapeKeyDown(e)}>
-        {showPopup? children: null}
+    return (
+        <ModalStyled style={showPopup ? { transform: 'scale(1)' } : { transform: 'scale(0)' }} onKeyDown={e => closeOnEscapeKeyDown(e)}>
+            {showPopup ? children : null}
         </ModalStyled>
     )
 }

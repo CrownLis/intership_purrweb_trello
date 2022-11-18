@@ -1,7 +1,6 @@
-import { FC, useContext, useState } from "react";
+import { FC, useState } from "react";
 import styled from "styled-components";
-import useSelector from "../../store/hooks";
-import { actions, selectors } from "../../store/store";
+import { actions } from "../../store/store";
 import Button from "../../UIComponents/Button";
 import ModalWindow from "../../UIComponents/ModalWindow/ModalWindow";
 

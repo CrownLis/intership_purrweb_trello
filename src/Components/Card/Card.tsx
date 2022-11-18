@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import styled from "styled-components";
 import useSelector from "../../store/hooks";
 import { actions, selectors } from "../../store/store";
-import { CardType, ColumnType, CommentType } from "../../Types/types";
+import { CardType, ColumnType } from "../../Types/types";
 import Button from "../../UIComponents/Button";
 import ModalWindow from "../../UIComponents/ModalWindow/ModalWindow";
 import TextArea from "../../UIComponents/TextArea";

@@ -1,10 +1,10 @@
-import { FC, useContext, useState } from "react";
+import { FC, useState } from "react";
 import styled from "styled-components";
 import useSelector from "../../../store/hooks";
 import { actions, selectors } from "../../../store/store";
 import { CommentType } from "../../../Types/types";
 import Button from "../../../UIComponents/Button";
-import TextArea  from "../../../UIComponents/TextArea";
+import TextArea from "../../../UIComponents/TextArea";
 
 type CommentProps = {
     comment: CommentType,
@@ -14,8 +14,8 @@ const CommentArea: FC<CommentProps> = ({ comment }) => {
 
     const [textComment, setTextComment] = useState(comment.text)
     const [isEdit, setIsEdit] = useState(false)
-const user = useSelector(selectors.user.selectUser())
-console.log(comment)
+    const user = useSelector(selectors.user.selectUser())
+
     const endEdit = () => {
         const editedComment = { ...comment, text: textComment }
         if (textComment.length > 0) {

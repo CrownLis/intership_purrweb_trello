@@ -1,4 +1,4 @@
-import { FC, useContext } from "react"
+import { FC } from "react"
 import styled from "styled-components"
 import useSelector from "../../store/hooks"
 import { selectors } from "../../store/store"
