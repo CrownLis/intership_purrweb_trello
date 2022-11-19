@@ -1,27 +1,27 @@
 import { FC } from "react"
 import styled from "styled-components"
-import useSelector from "../../store/hooks"
-import { selectors } from "../../store/store"
+import { getUser } from "../../store/ducks/user/selectors"
+import { useAppSelector } from "../../store/hooks"
 
 const Header: FC = () => {
 
-const user = useSelector(selectors.user.selectUser())
+const user = useAppSelector(getUser)
 
     return (
-        <StyledHeader>
+        <Root>
             <StyledTitle>
                {user? `Приветствую ${user.name}` : 'Авторизуйтесь'}
             </StyledTitle>
-        </StyledHeader>
+        </Root>
     )
 }
 
 export default Header
 
-const StyledHeader = styled.header`
+const Root = styled.header`
 width:100%;
 max-height:40px;
-background:#0ac2ff;
+background:#cfe2b0;
 `
 const StyledTitle = styled.h1`
 font-size:24px;

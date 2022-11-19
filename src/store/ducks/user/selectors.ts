@@ -1,9 +1,6 @@
-import { State } from '../../../Types/types';
+import { RootState } from "../../store";
 
-const selectUser = () => {
-  return (state: State) => {
-    return state.user;
-  };
-};
+export const getUser = (state:RootState) => {
+  return state.user.user
+}
 
-export const userSelectors = { selectUser };

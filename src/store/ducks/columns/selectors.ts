@@ -1,9 +1,5 @@
-import { State } from '../../../Types/types';
+import { RootState } from "../../store";
 
-const selectColumns = () => {
-  return (state: State) => {
-    return state.columns;
-  };
-};
-
-export const columnsSelectors = { selectColumns };
+export const getColumns = (state:RootState) => {
+  return state.columns.columns
+}
