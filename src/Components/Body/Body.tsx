@@ -1,14 +1,13 @@
 import { FC } from "react";
 import styled from "styled-components";
-import useSelector from "../../store/hooks";
-import { selectors } from "../../store/store";
-import { CardType, ColumnType, CommentType } from "../../Types/types";
+import { getColumns } from "../../store/ducks/columns/selectors";
+import { useAppSelector } from "../../store/hooks";
 import Column from "../Column/Column";
 
 
 const Body: FC = () => {
 
-    const columns = useSelector(selectors.columns.selectColumns())
+    const columns = useAppSelector(getColumns)
     return (
         <StyledDesk>
             {columns?.map(item =>

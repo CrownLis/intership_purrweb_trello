@@ -10,7 +10,7 @@ const Input: FC<InputType> = ({ ...props }) => {
   )
 }
 
-const Root = styled.input<InputType>`
+const Root = styled.input`
   font-size: 20px;
   border: 2px solid gray;
   border-radius: 4px;

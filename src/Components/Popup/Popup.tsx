@@ -1,10 +1,10 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { setUser } from "../../store/ducks/user/userSlice";
 import { useAppDispatch } from "../../store/hooks";
+import { UserType } from "../../Types/types";
 import Button from "../../UIComponents/Button";
-import Input from '../../UIComponents/Input'
 import ModalWindow from "../../UIComponents/ModalWindow/ModalWindow";
 
 type PopupProps = {
@@ -12,35 +12,24 @@ type PopupProps = {
     setShowPopup: (arg1: boolean) => void;
 };
 
-type FormInputs = {
-    name: string;
-};
-
 const Popup: FC<PopupProps> = ({ showPopup, setShowPopup }) => {
 
-    const [inputName, setInputName] = useState<string>('')
     const dispatch = useAppDispatch()
 
 
 
-    const { register,handleSubmit } = useForm<FormInputs>({
+    const { register, handleSubmit } = useForm<UserType>({
         mode: 'onSubmit',
         reValidateMode: 'onChange',
         defaultValues: {
-            name:''
+            name: ''
         },
-    })
+    })  
 
-    // const checkForm = (e: any) => {
-    //     e.preventDefault()
-    //     const isName = inputName.split('').some(item => Number.isInteger(Number(item)))
-    //     if (inputName.length > 0 && !isName) {
-    //         setShowPopup(false)
-    //         actions.user.changeUser({ name: inputName })
-    //     } else {
-    //         alert('Введите корректное имя')
-    //     }
-    // }
+    const onSubmit = (data: UserType) => {
+        dispatch(setUser(data))
+        setShowPopup(false)
+    }
 
     const onCloseModal = () => {
         alert('Please enter the name')
@@ -48,9 +37,9 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup }) => {
 
     return (
         <ModalWindow showPopup={showPopup} onClose={onCloseModal}>
-            <FormStyled onSubmit={handleSubmit((data) => dispatch(setUser(data))) }>
-                <LabelStyled htmlFor="firstName">Введите ваше имя</LabelStyled>
-                <input {...register('name',
+            <FormStyled onSubmit={handleSubmit(onSubmit)}>
+                <LabelStyled htmlFor="name">Введите ваше имя</LabelStyled>
+                <StyledInput {...register('name',
                     {
                         required: 'Please enter the name',
                         minLength: {
@@ -58,10 +47,10 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup }) => {
                             message: 'Пожалуйста,введите корректное имя'
                         }
                     }
-                )} name="firstName" type='text' autoFocus />
-                <Button type="submit">
+                )} name="name" type='text' autoFocus />
+                <StyledButton type="submit">
                     Submit
-                </Button>
+                </StyledButton>
             </FormStyled>
         </ModalWindow>
     )
@@ -69,13 +58,11 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup }) => {
 
 export default Popup
 
-const LabelStyled = styled.label`
-font-size:18px;
-`
-
 const FormStyled = styled.form`
 display:flex;
 flex-direction:column;
+min-width:300px;
+min-height:120px;
 background-color:white;
 align-items:center;
 padding:10px 20px;
@@ -84,4 +71,15 @@ border: 2px solid gray;
         transition: 0.6s all;
         border-radius:10px;
 
+`
+const LabelStyled = styled.label`
+font-size:24px;
+`
+
+const StyledInput = styled.input`
+    font-size:20px;
+`
+
+const StyledButton = styled(Button)`
+    font-size:18px;
 `

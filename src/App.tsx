@@ -1,18 +1,15 @@
 import { FC, useEffect, useState } from 'react';
 import Header from './Components/Header';
+import Body from './Components/Body';
 import Popup from './Components/Popup/Popup';
-import { CardType, ColumnType, CommentType, UserType } from './Types/types';
-import Body from './Components/Body/Body';
-import useLocalStorage from './Hooks/useLocalStorage';
-import StoreContext from './store/StoreContext';
+import { useAppSelector } from './store/hooks';
+import { getUser } from './store/ducks/user/selectors';
+import styled from 'styled-components';
 
 const App:FC = () => {
 
   const [showPopup, setShowPopup] = useState<boolean>(false)
-  const [user] = useLocalStorage<UserType | null>('user')
-  const [columns] = useLocalStorage<ColumnType[]>('columns')
-  const [cards] = useLocalStorage<CardType[]>('cards')
-  const [comments] = useLocalStorage<CommentType[]>('comments')
+  const user = useAppSelector(getUser)
 
   useEffect(() => {
     if (!user) {
@@ -21,14 +18,16 @@ const App:FC = () => {
   }, [user])
 
   return (
-    <StoreContext.Provider value={{ user,cards,columns,comments }}>
-      <div className="App">
+      <Root>
         <Header />
         <Body />
         <Popup showPopup={showPopup} setShowPopup={setShowPopup} />
-      </div >
-    </StoreContext.Provider>
+      </Root >
   );
 }
 
 export default App;
+
+const Root = styled.div`
+
+`

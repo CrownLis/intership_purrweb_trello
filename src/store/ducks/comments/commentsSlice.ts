@@ -19,9 +19,16 @@ const commentsSlice = createSlice({
             } else {
                 state.comments = [action.payload]
             }
-        },
+        },  
         removeComment(state, action: PayloadAction<CommentType['id']>) {
-            state.comments?.filter((item) => item.id === action.payload)
+           if (state.comments) {
+            state.comments = state.comments?.filter((item) => item.id !== action.payload)
+           }
+        },
+        removeAllCommentsCard(state,action:PayloadAction<CommentType['cardId']>) {
+            if (state.comments) {
+            state.comments = state.comments.filter((item) => item.cardId !== action.payload)
+            }
         },
         changeComment(state, action: PayloadAction<CommentType>) {
             state.comments?.map((item) => item.id === action.payload.id ? action.payload : item)
@@ -31,4 +38,4 @@ const commentsSlice = createSlice({
 
 export default commentsSlice
 
-export const {addComment, removeComment, changeComment} = commentsSlice.actions
+export const {addComment, removeComment, removeAllCommentsCard, changeComment} = commentsSlice.actions

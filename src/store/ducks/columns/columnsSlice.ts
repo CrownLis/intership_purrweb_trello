@@ -30,7 +30,7 @@ const columnsSlice = createSlice({
     name: 'columnsSlice',
     initialState,
     reducers: {
-        changeComment(state, action: PayloadAction<ColumnType>) {
+        changeColumn(state, action: PayloadAction<ColumnType>) {
             state.columns?.map((item) => item.id === action.payload.id ? action.payload : item)
         }
     }
@@ -38,4 +38,4 @@ const columnsSlice = createSlice({
 
 export default columnsSlice
 
-export const { changeComment } = columnsSlice.actions
+export const { changeColumn } = columnsSlice.actions

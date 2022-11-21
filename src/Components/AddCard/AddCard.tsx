@@ -1,6 +1,10 @@
-import { FC, useState } from "react";
+import { FC } from "react";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { actions } from "../../store/store";
+import { addCard } from "../../store/ducks/cards/cardsSlice";
+import { getUser } from "../../store/ducks/user/selectors";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { CardType } from "../../Types/types";
 import Button from "../../UIComponents/Button";
 import ModalWindow from "../../UIComponents/ModalWindow/ModalWindow";
 
@@ -11,39 +15,53 @@ type ColumnProps = {
 }
 
 const AddCard: FC<ColumnProps> = ({ columnId, show, setShow }) => {
+ 
+    const user = useAppSelector(getUser)
+    const dispatch = useAppDispatch()
+    const { register, handleSubmit, resetField } = useForm<CardType>({
 
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
+        mode: 'onSubmit',
+        reValidateMode: 'onChange',
+        defaultValues: {
+            description:'',
+            name:''
+        },
+    })
 
-    const onSubmit = (e: any) => {
-        e.preventDefault()
-        let card = {
-            columnId: columnId,
-            name: title,
-            description: description,
-        }
-        if (card.name.length > 0) {
-            actions.cards.addCard(card)
-            setShow(false)
-            setTitle('')
-            setDescription('')
-        } else {
-            alert('Введите название карточки')
-        }
+    const onSubmit = (data:CardType) => {
+        dispatch(addCard({...data,id:Number(new Date()),author:user!.name,columnId:columnId}))
+        resetField('name')
+        resetField('description')
+        setShow(false)
     }
     
 const onCloseModal = () => {
-    setTitle('')
-    setDescription('');
     setShow(false)
 }
 
     return (
         <ModalWindow showPopup={show} onClose={onCloseModal}>
             <StyledContainer>
-                <StyledForm onSubmit={onSubmit}>
-                    <StyledInput onChange={e => setTitle(e.target.value)} value={title} />
-                    <StyledDescription onChange={e => setDescription(e.target.value)} value={description} />
+                <StyledForm onSubmit={handleSubmit(onSubmit)}>
+                    <StyledInput {...register('name',
+                    {
+                        required: 'Please enter the card name',
+                        minLength: {
+                            value: 1,
+                            message: 'Please enter the correct card name'
+                        }
+                    }
+                )}/>
+                    <StyledDescription {...register('description',
+                    {
+                        required: 'Please enter the description',
+                        minLength: {
+                            value: 1,
+                            message: 'Please enter the correct description'
+                        }
+                    }
+                )}
+                    />
                     <ButtonDiv>
                         <Button type='submit'>
                             Submit

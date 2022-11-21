@@ -21,11 +21,11 @@ export default Header
 const Root = styled.header`
 width:100%;
 max-height:40px;
-background:#cfe2b0;
+background-color:var(--lightest-color)
 `
 const StyledTitle = styled.h1`
 font-size:24px;
-color:white;
+color:var(--darkest-color);
 text-align:center;
 padding:6px;
 `

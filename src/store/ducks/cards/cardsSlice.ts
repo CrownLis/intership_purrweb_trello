@@ -21,10 +21,14 @@ const cardsSlice = createSlice({
             }
         },
         removeCard(state, action: PayloadAction<CardType['id']>) {
-            state.cards?.filter((item) => item.id === action.payload)
+            if (state.cards) {
+           state.cards = state.cards.filter((item) => item.id !== action.payload)
+            }
         },
         changeCard(state, action: PayloadAction<CardType>) {
-            state.cards?.map((item) => item.id === action.payload.id ? action.payload : item)
+            if (state.cards) {
+           state.cards = state.cards?.map((item) => item.id === action.payload.id ? action.payload : item)
+            }
         }
     }
 })

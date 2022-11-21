@@ -1,14 +1,14 @@
-import { ButtonHTMLAttributes, FC, HTMLProps, PropsWithChildren } from 'react';
-import styled, { css } from 'styled-components';
+import { ButtonHTMLAttributes, FC, PropsWithChildren } from 'react';
+import styled from 'styled-components';
 
 type ButtonType = PropsWithChildren<{
-  buttonType?: 'primary' | 'cancel'
+
 } & ButtonHTMLAttributes<HTMLButtonElement>>
 
 
-const Button: FC<ButtonType> = ({ buttonType, children, ...props }) => {
+const Button: FC<ButtonType> = ({ children, ...props }) => {
   return (
-    <Root buttonType={buttonType} {...props}>
+    <Root {...props}>
       {children}
     </Root>
   )
@@ -16,7 +16,7 @@ const Button: FC<ButtonType> = ({ buttonType, children, ...props }) => {
 
 export default Button
 
-const Root = styled.button<ButtonType>`
+const Root = styled.button`
   font-size: 16px;
   border: 2px solid gray;
   border-radius: 4px;
@@ -28,14 +28,4 @@ const Root = styled.button<ButtonType>`
   &:hover {
     box-shadow: 2px 2px 4px black;
   }
-
-  ${props => props.buttonType === 'primary' && css`
-background-color:blue;
-color:white;
-`}
-
-${props => props.buttonType === 'cancel' && css`
-background-color:red,
-color"white;
-`}
 `;
