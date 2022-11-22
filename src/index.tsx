@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { createGlobalStyle } from 'styled-components';
-import { persistor, store } from './store/store'
-import App from './App';
-import { PersistGate } from 'redux-persist/integration/react';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import { createGlobalStyle } from "styled-components";
+import { persistor, store } from "./store/store";
+import App from "./App";
+import { PersistGate } from "redux-persist/integration/react";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -15,7 +15,7 @@ body {
   --dark-color:#BF9E30;
   --darkest-color:#A67F00;
   margin: 0;
-  background-color:var(--primary-color);
+  background-color:var(--light-color);
 }
 
 main {
@@ -30,10 +30,10 @@ h1,h2,h3,h4,h5,h6 {
 span {
   margin:0;
 }
-`
+`;
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.Fragment>

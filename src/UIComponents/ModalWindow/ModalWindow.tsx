@@ -1,5 +1,5 @@
-import { FC, PropsWithChildren, useCallback, useEffect } from "react"
-import styled from "styled-components"
+import { FC, PropsWithChildren, useCallback, useEffect } from "react";
+import styled from "styled-components";
 
 type modalProps = PropsWithChildren<{
     showPopup?: boolean;
@@ -23,13 +23,13 @@ const ModalWindow: FC<modalProps> = ({ showPopup, onClose, children }) => {
 
 
     return (
-        <ModalStyled style={showPopup ? { transform: 'scale(1)' } : { transform: 'scale(0)' }} onKeyDown={e => closeOnEscapeKeyDown(e)}>
+        <ModalStyled style={showPopup ? { transform: "scale(1)" } : { transform: "scale(0)" }} onKeyDown={e => closeOnEscapeKeyDown(e)}>
             {showPopup ? children : null}
         </ModalStyled>
-    )
-}
+    );
+};
 
-export default ModalWindow
+export default ModalWindow;
 
 const ModalStyled = styled.div`
 height: 100vh;
@@ -43,4 +43,4 @@ justify-content: center;
 align-items: center;
 transform: scale(1);
 opacity: 1;
-`
+`;

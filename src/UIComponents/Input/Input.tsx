@@ -1,5 +1,5 @@
-import { FC, InputHTMLAttributes } from 'react';
-import styled from 'styled-components';
+import { FC, InputHTMLAttributes } from "react";
+import styled from "styled-components";
 
 type InputType = {
 } & InputHTMLAttributes<HTMLInputElement>
@@ -7,8 +7,8 @@ type InputType = {
 const Input: FC<InputType> = ({ ...props }) => {
   return (
     <Root {...props}/>
-  )
-}
+  );
+};
 
 const Root = styled.input`
   font-size: 20px;

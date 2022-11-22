@@ -27,7 +27,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "lint":"eslint src --ext .ts,.tsx"
   },
   "eslintConfig": {
     "extends": [
@@ -49,6 +50,10 @@
   },
   "devDependencies": {
     "@types/styled-components": "^5.1.26",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "eslint": "^8.28.0",
+    "eslint-plugin-react": "^7.31.11",
     "prettier": "^2.7.1"
   }
 }

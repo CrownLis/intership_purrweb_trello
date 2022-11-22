@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { changeCard, removeCard } from "../../store/ducks/cards/cardsSlice";
@@ -12,32 +12,31 @@ import ModalWindow from "../../UIComponents/ModalWindow/ModalWindow";
 import CommentArea from "./CommentArea/CommentArea";
 
 type CardProps = {
-    columnName: ColumnType['name']
+    columnName: ColumnType["name"]
     data: CardType,
-    setShowCardInfo: (arg1: boolean) => void,
-    show: boolean
+    onClose: () => void,
 }
 
-type TextAreaProps = {
-    editNow:boolean
+type EditProps = {
+    editNow: boolean
 }
 
 type ButtonProps = {
-    hidden?:boolean
+    hidden?: boolean
 }
 
-const Card: FC<CardProps> = ({ data, show, setShowCardInfo, columnName }) => {
+const Card: FC<CardProps> = ({ data, onClose, columnName }) => {
 
     const [isEdit, setIsEdit] = useState(false);
-    const comments = useAppSelector((state) => getCommentsByCardId(state, data.id))
-    const user = useAppSelector(getUser)
-    const isAuthor = user?.name === data.author
-    const hidden = !isEdit
-    const dispatch = useAppDispatch()
+    const comments = useAppSelector((state) => getCommentsByCardId(state, data.id));
+    const user = useAppSelector(getUser);
+    const isAuthor = user?.name === data.author;
+    const hidden = !isEdit;
+    const dispatch = useAppDispatch();
 
     const { register: cardRegister, handleSubmit: handleCardSubmit } = useForm<CardType>({
-        mode: 'onSubmit',
-        reValidateMode: 'onChange',
+        mode: "onSubmit",
+        reValidateMode: "onChange",
         defaultValues: {
             author: data.author,
             columnId: data.columnId,
@@ -45,52 +44,49 @@ const Card: FC<CardProps> = ({ data, show, setShowCardInfo, columnName }) => {
             name: data.name,
             description: data.description
         },
-    })
+    });
 
     const { register: commentRegister, handleSubmit: handleCommentSubmit, resetField: resetCommentValues } = useForm<CommentType>({
-        mode: 'onSubmit',
-        reValidateMode: 'onChange',
+        mode: "onSubmit",
+        reValidateMode: "onChange",
         defaultValues: {
             author: user?.name,
             cardId: data.id,
-            text: ''
+            text: ""
         },
-    })
-
-    const onCloseModal = () => {
-        setShowCardInfo(false)
-    }
+    });
 
     const onSubmit = (data: CommentType) => {
-        dispatch(addComment({ ...data, id: Number(new Date()) }))
-        resetCommentValues('id')
-        resetCommentValues('text')
-    }
+        dispatch(addComment({ ...data, id: Number(new Date()) }));
+        resetCommentValues("id");
+        resetCommentValues("text");
+    };
 
     const endEdit = (data: CardType) => {
-        dispatch(changeCard(data))
-        setIsEdit(false)
-    }
+        dispatch(changeCard(data));
+        setIsEdit(false);
+    };
 
     const deleteCard = () => {
-        dispatch(removeCard(data.id))
-        dispatch(removeAllCommentsCard(data.id))
-    }
+        dispatch(removeCard(data.id));
+        dispatch(removeAllCommentsCard(data.id));
+        onClose();
+    };
 
     return (
-        <ModalWindow showPopup={show} onClose={onCloseModal}>
+        <ModalWindow showPopup={Boolean(data)} onClose={onClose}>
             <StyledContainer>
-                <CancelButton onClick={() => setShowCardInfo(false)}>
+                <CancelButton onClick={onClose}>
                     X
                 </CancelButton>
                 <CardForm onSubmit={handleCardSubmit(endEdit)}>
                     <CardHeader>
-                        <StyledInput {...cardRegister('name',
+                        <StyledInput editNow={isEdit} {...cardRegister("name",
                             {
-                                required: 'Please enter the card name',
+                                required: "Please enter the card name",
                                 minLength: {
                                     value: 1,
-                                    message: 'Please enter the card name'
+                                    message: "Please enter the card name"
                                 }
                             }
                         )} name="name" type='text' readOnly={!isEdit} />
@@ -103,12 +99,12 @@ const Card: FC<CardProps> = ({ data, show, setShowCardInfo, columnName }) => {
                     </CardHeader>
                     <CardDescription>
                         <StyledTitle>Description</StyledTitle>
-                        <StyledDescription editNow={isEdit} {...cardRegister('description',
+                        <StyledDescription editNow={isEdit} {...cardRegister("description",
                             {
-                                required: 'Please enter the column description',
+                                required: "Please enter the column description",
                                 minLength: {
                                     value: 1,
-                                    message: 'Please enter the column description'
+                                    message: "Please enter the column description"
                                 }
                             }
                         )} name="firstName" readOnly={!isEdit} />
@@ -118,7 +114,7 @@ const Card: FC<CardProps> = ({ data, show, setShowCardInfo, columnName }) => {
                                     Изменить карточку
                                 </StyledButton>
                                 <StyledButton hidden={hidden} type='submit'>
-                                  Сохранить изменения
+                                    Сохранить изменения
                                 </StyledButton>
                             </ButtonDiv> : null}
                     </CardDescription>
@@ -126,12 +122,12 @@ const Card: FC<CardProps> = ({ data, show, setShowCardInfo, columnName }) => {
                 <CommentsContainer>
                     <StyledTitle>Comments</StyledTitle>
                     <StyledForm onSubmit={handleCommentSubmit(onSubmit)}>
-                        <StyledComment {...commentRegister('text',
+                        <StyledComment {...commentRegister("text",
                             {
-                                required: 'Please enter the comment',
+                                required: "Please enter the comment",
                                 minLength: {
                                     value: 1,
-                                    message: 'Please enter the comment'
+                                    message: "Please enter the comment"
                                 }
                             }
                         )} />
@@ -148,10 +144,10 @@ const Card: FC<CardProps> = ({ data, show, setShowCardInfo, columnName }) => {
                 </ButtonDiv>
             </StyledContainer>
         </ModalWindow>
-    )
-}
+    );
+};
 
-export default Card
+export default Card;
 
 const StyledContainer = styled.div`
 display:flex;
@@ -161,10 +157,10 @@ min-height:200px;
 min-width:500px;
 max-height:600px;
 overflow:auto;
-border:2px solid black;
+border:2px solid var(--darkest-color);
 border-radius:10px;
-background-color:white;
-`
+background-color:var(--light-color);
+`;
 const CancelButton = styled(Button)`
 position:absolute;
 right:0px;
@@ -174,10 +170,10 @@ width:30px;
 background-color:red;
 border:2px solid black;
 border-radius:50%;
-`
+`;
 const CardForm = styled.form`
     
-`
+`;
 
 const CardHeader = styled.div`
 display:flex;
@@ -185,63 +181,81 @@ flex-direction:column;
 justify-content:space-between;
 width:100%;
 height:10%;
-background-color:#eef7bf;
-border-bottom:2px solid black;
+background-color:var(--lightest-color);
+border-bottom:2px solid var(--darkest-color);
 border-radius:6px 6px 0 0;
-`
+`;
 
 const CardDescription = styled.div`
 width:100%;
 height:40%;
 display:flex;
 flex-direction:column;
-`
-const StyledDescription = styled.textarea<TextAreaProps>`
+`;
+const StyledDescription = styled.textarea<EditProps>`
 flex-grow:1;
 resize:none;
 margin:0 20px;
-border: ${props => props.editNow ? '2px solid #d8e49b' : '2px solid white'};
+border: ${props => props.editNow ? "2px solid var(--darkest-color)" : "2px solid transparent"};
+color:var(--darkest-color);
+background-color:${props => props.editNow? "var(--light-color)" : "transparent"};
 border-radius:10px;
 min-height:60px;
 outline:none;
-`
+`;
 const CommentsContainer = styled.div`
 width:100%;
 height:50%;
-`
+`;
 
-const StyledInput = styled.input`
-border:1px solid black;
+const StyledInput = styled.input<EditProps>`
+border: ${props => props.editNow ? "2px solid var(--darkest-color)" : "2px solid transparent"};
+background-color:${props => props.editNow? "var(--light-color)" : "transparent"};
+font-weight:bold;
 border-radius:6px;
 margin:20px;
 font-size:20px;
+color:var(--darkest-color);
 outline:none;
 max-width:80%;
-`
+`;
 const StyledTitle = styled.h3`
 font-size:22px;
 padding:10px;
-`
+color:var(--darkest-color);
+`;
+const StyledComment = styled.textarea`
+flex-grow:1;
+resize:none;
+margin:0 20px;
+border:'2px solid #d8e49b';
+background-color:var(--lightest-color);
+color:var(--darkest-color);
+border-radius:10px;
+min-height:60px;
+padding:4px;
+outline:none;
+`;
+
 const ButtonDiv = styled.div`
 display:flex;
 justify-content:space-around;
-`
-const StyledButton = styled(Button)<ButtonProps>`
+`;
+const StyledButton = styled(Button) <ButtonProps>`
     margin:10px 20px;
-    display:${props => props.hidden? 'none' : 'block'};
-`
+    background-color:var(--dark-color);
+    border:2px solid var(--darkest-color);
+    color: var(--primary-color);
+    display:${props => props.hidden ? "none" : "block"};
+`;
 const RemoveButton = styled(Button)`
-    background-color:var(--primary-color);
+    background-color:var(--darkest-color);
     border:1px solid black;
     padding:6px;
-    color:lightgray;
-`
+    color:var(--light-color);
+`;
 
 const StyledForm = styled.form`
 display:flex;
 flex-direction:column;
-`
-const StyledComment = styled.textarea`
-    margin:0 20px;
-    resize:none;
-`
+`; 

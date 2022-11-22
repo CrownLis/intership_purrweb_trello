@@ -1,5 +1,5 @@
-import { ButtonHTMLAttributes, FC, PropsWithChildren } from 'react';
-import styled from 'styled-components';
+import React,{ ButtonHTMLAttributes, FC, PropsWithChildren } from "react";
+import styled from "styled-components";
 
 type ButtonType = PropsWithChildren<{
 
@@ -11,10 +11,10 @@ const Button: FC<ButtonType> = ({ children, ...props }) => {
     <Root {...props}>
       {children}
     </Root>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;
 
 const Root = styled.button`
   font-size: 16px;

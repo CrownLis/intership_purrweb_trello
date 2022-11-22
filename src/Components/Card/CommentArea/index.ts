@@ -1,2 +1,2 @@
-import CommentArea from './CommentArea';
+import CommentArea from "./CommentArea";
 export default CommentArea;
