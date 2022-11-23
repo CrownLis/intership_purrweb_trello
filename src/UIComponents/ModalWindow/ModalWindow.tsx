@@ -1,37 +1,38 @@
-import { FC, PropsWithChildren, useCallback, useEffect } from "react";
-import styled from "styled-components";
+import React, { FC, KeyboardEvent, PropsWithChildren, useCallback, useEffect } from 'react';
+import styled, { css } from 'styled-components';
 
 type modalProps = PropsWithChildren<{
-    showPopup?: boolean;
+    isShowPopup: boolean;
     onClose: () => void;
 }>;
 
-const ModalWindow: FC<modalProps> = ({ showPopup, onClose, children }) => {
+const ModalWindow: FC<modalProps> = ({ isShowPopup, onClose, children }) => {
+    const closeOnEscapeKeyDown = useCallback(
+        (e: (KeyboardEvent<HTMLDivElement>)) => {
+            if ((e.charCode || e.keyCode) === 27) {
+                onClose();
+            }
+        }, [isShowPopup]);
 
-    const closeOnEscapeKeyDown = useCallback((e: { charCode: any; keyCode: any; }) => {
-        if ((e.charCode || e.keyCode) === 27) {
-            onClose();
-
-        }
-    }, [showPopup]);
     useEffect(() => {
-        document.body.addEventListener("keydown", closeOnEscapeKeyDown);
-        return function cleanup() {
-            document.body.removeEventListener("keydown", closeOnEscapeKeyDown);
+        const listener = closeOnEscapeKeyDown as unknown as EventListener;
+        document.body.addEventListener('keydown', listener);
+        return () => {
+            document.body.removeEventListener('keydown', listener);
         };
     }, [closeOnEscapeKeyDown]);
 
 
     return (
-        <ModalStyled style={showPopup ? { transform: "scale(1)" } : { transform: "scale(0)" }} onKeyDown={e => closeOnEscapeKeyDown(e)}>
-            {showPopup ? children : null}
+        <ModalStyled $isShowPopup={isShowPopup} onKeyDown={e => closeOnEscapeKeyDown(e)}>
+            {isShowPopup ? children : null}
         </ModalStyled>
     );
 };
 
 export default ModalWindow;
 
-const ModalStyled = styled.div`
+const ModalStyled = styled.div<{ $isShowPopup: boolean }>`
 height: 100vh;
 width: 100vw;
 background-color: rgba(0, 0, 0, 0.6);
@@ -43,4 +44,13 @@ justify-content: center;
 align-items: center;
 transform: scale(1);
 opacity: 1;
+${({ $isShowPopup }) =>
+        $isShowPopup ?
+            css`
+    transform:scale(1);
+` :
+            css`
+    transform:scale(0)
+`
+    }
 `;

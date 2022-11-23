@@ -1,12 +1,11 @@
-import { FC } from "react";
-import { useForm } from "react-hook-form";
-import styled from "styled-components";
-import { addCard } from "../../store/ducks/cards/cardsSlice";
-import { getUser } from "../../store/ducks/user/selectors";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { CardType } from "../../Types/types";
-import Button from "../../UIComponents/Button";
-import ModalWindow from "../../UIComponents/ModalWindow/ModalWindow";
+import React, { FC } from 'react';
+import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
+import { rootActions,rootSelectors } from '../../store/ducks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { CardType } from '../../Types/types';
+import Button from '../../UIComponents/Button';
+import ModalWindow from '../../UIComponents/ModalWindow/ModalWindow';
 
 type ColumnProps = {
     columnId: number,
@@ -16,20 +15,20 @@ type ColumnProps = {
 
 const AddCard: FC<ColumnProps> = ({ columnId, show, setShow }) => {
 
-    const user = useAppSelector(getUser);
+    const user = useAppSelector(rootSelectors.user.selectorGetUser);
     const dispatch = useAppDispatch();
     const { register, handleSubmit, reset } = useForm<CardType>({
 
-        mode: "onSubmit",
-        reValidateMode: "onChange",
+        mode: 'onSubmit',
+        reValidateMode: 'onChange',
         defaultValues: {
-            description: "",
-            name: ""
+            description: '',
+            name: ''
         },
     });
 
     const onSubmit = (data: CardType) => {
-        dispatch(addCard({ ...data, id: Number(new Date()), author: user!.name, columnId: columnId }));
+        dispatch(rootActions.cards.addCard({ ...data, id: Number(new Date()), author: user!.name, columnId: columnId }));
         reset();
         setShow(false);
     };
@@ -39,36 +38,36 @@ const AddCard: FC<ColumnProps> = ({ columnId, show, setShow }) => {
     };
 
     return (
-        <ModalWindow showPopup={show} onClose={onCloseModal}>
+        <ModalWindow isShowPopup={show} onClose={onCloseModal}>
             <StyledContainer>
                 <StyledForm onSubmit={handleSubmit(onSubmit)}>
-                    <StyledInput {...register("name",
+                    <StyledInput {...register('name',
                         {
-                            required: "Please enter the card name",
+                            required: 'Please enter the card name',
                             minLength: {
                                 value: 1,
-                                message: "Please enter the correct card name"
+                                message: 'Please enter the correct card name'
                             }
                         }
                     )} />
-                    <StyledDescription {...register("description",
+                    <StyledDescription {...register('description',
                         {
-                            required: "Please enter the description",
+                            required: 'Please enter the description',
                             minLength: {
                                 value: 1,
-                                message: "Please enter the correct description"
+                                message: 'Please enter the correct description'
                             }
                         }
                     )}
                     />
-                    <ButtonDiv>
+                    <ButtonContainer>
                         <StyledButton type='submit'>
                             Submit
                         </StyledButton>
                         <StyledButton type='button' onClick={() => setShow(false)}>
                             Cancel
                         </StyledButton>
-                    </ButtonDiv>
+                    </ButtonContainer>
                 </StyledForm>
             </StyledContainer>
         </ModalWindow>
@@ -84,15 +83,17 @@ border:2px solid var(--darkest-color);
 border-radius:16px;
 background-color:var(--dark-color);
 `;
+
 const StyledForm = styled.form`
 display:flex;
 flex-direction:column;
 `;
 
-const ButtonDiv = styled.div`
+const ButtonContainer = styled.div`
 display:flex;
 justify-content:space-around;
 `;
+
 const StyledButton = styled(Button)`
     background-color:var(--darkest-color);
     border:2px solid var(--lightest-color);

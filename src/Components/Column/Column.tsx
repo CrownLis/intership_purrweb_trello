@@ -1,16 +1,15 @@
-import { FC, useState } from "react";
-import styled from "styled-components";
-import Button from "../../UIComponents/Button";
-import AddCard from "../AddCard/AddCard";
-import Card from "../Card/Card";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { getCardsByColumnId } from "../../store/ducks/cards/selectors";
-import { useForm } from "react-hook-form";
-import { CardType, ColumnType } from "../../Types/types";
-import { changeColumn } from "../../store/ducks/columns/columnsSlice";
-import EditIcon from "./../../assets/editIcon.png";
-import SaveIcon from "./../../assets/saveIcon.png";
-import CardInfo from "./CardInfo/CardInfo";
+import React, { FC, useState } from 'react';
+import styled from 'styled-components';
+import Button from '../../UIComponents/Button';
+import AddCard from '../AddCard/AddCard';
+import Card from '../Card/Card';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useForm } from 'react-hook-form';
+import { CardType, ColumnType } from '../../Types/types';
+import { rootActions, rootSelectors } from '../../store/ducks';
+import EditIcon from './../../assets/editIcon.png';
+import SaveIcon from './../../assets/saveIcon.png';
+import CardInfo from './CardInfo/CardInfo';
 
 type ColumnProps = {
     data: ColumnType
@@ -27,36 +26,36 @@ const Column: FC<ColumnProps> = ({ data }) => {
     const dispatch = useAppDispatch();
     const [activeCard, setActiveCard] = useState<CardType | null>(null);
     const { register, handleSubmit } = useForm<ColumnType>({
-        mode: "onSubmit",
-        reValidateMode: "onChange",
+        mode: 'onSubmit',
+        reValidateMode: 'onChange',
         defaultValues: {
             id: data.id,
             name: data.name
         },
     });
 
-    const cards = useAppSelector((state) => getCardsByColumnId(state, data.id));
-    const onSubmit = (d: ColumnType) => {
-        dispatch(changeColumn(d));
+    const cards = useAppSelector((state) => rootSelectors.cards.selectorGetCardsByColumnId(state, data.id));
+    const onSubmit = (values: ColumnType) => {
+        dispatch(rootActions.columns.changeColumn(values));
         setIsEdit(false);
     };
 
     return (
         <StyledColumn>
             <TitleColumn onSubmit={handleSubmit(onSubmit)}>
-                <StyledInput {...register("name",
+                <StyledInput {...register('name',
                     {
-                        required: "Please enter the column name",
+                        required: 'Please enter the column name',
                         minLength: {
                             value: 3,
-                            message: "minimum column name must be 3 symbols"
+                            message: 'minimum column name must be 3 symbols'
                         }
                     }
                 )} readOnly={!isEdit} />
                 <IconButton hidden={!isEdit} type='submit'><SaveImage src={SaveIcon} /> </IconButton>
                 <IconButton hidden={isEdit} type='button'><ImageTitle src={EditIcon} onClick={() => setIsEdit(true)} /></IconButton>
             </TitleColumn>
-            <CardsDiv>
+            <CardsConitaner>
                 {activeCard ?
                     <Card
                         columnName={data.name}
@@ -72,12 +71,12 @@ const Column: FC<ColumnProps> = ({ data }) => {
                     );
                 }
                 )}
-            </CardsDiv>
-            <ButtonDiv>
+            </CardsConitaner>
+            <ButtonContainer>
                 <StyledButton onClick={() => setShowAddCard(true)}>
                     Добавить карточку
                 </StyledButton>
-            </ButtonDiv>
+            </ButtonContainer>
             <AddCard show={showAddCard} setShow={setShowAddCard} columnId={data.id} />
         </StyledColumn>
     );
@@ -92,7 +91,7 @@ background-color:transparent;
 padding:0;
 margin:0;
 border:0px;
-display:${props => props.hidden ? "none" : "block"};
+display:${props => props.hidden ? 'none' : 'block'};
 &:hover {
     box-shadow:0 0 0;
 }
@@ -109,7 +108,8 @@ padding:4px;
     border:2px solid var(--lightest-color);
 }
 `;
-const ButtonDiv = styled.div`
+
+const ButtonContainer = styled.div`
 display:flex;
 align-items:center;
 justify-content:center;
@@ -118,6 +118,7 @@ text-align:center;
 background-color:var(--darkest-color);
 height:30px;
 `;
+
 const StyledInput = styled.input`
 font-size:18px;
 font-weight:bold;
@@ -128,9 +129,11 @@ background-color:transparent;
 text-align:center;
 outline:none;
 `;
+
 const ImageTitle = styled.img`
     max-width:40px;
 `;
+
 const SaveImage = styled(ImageTitle)`
 max-height:20px;
 max-width:20px;
@@ -145,14 +148,16 @@ width:100%;
 max-height:30px;
 text-align:center;
 `;
-const CardsDiv = styled.div`
+
+const CardsConitaner = styled.div`
 display:flex;
 flex-direction:column;
 min-height:120px;
 `;
-const StyledCard = styled.div`
 
+const StyledCard = styled.div`
 `;
+
 const StyledColumn = styled.div`
 display:flex;
 flex-direction:column;

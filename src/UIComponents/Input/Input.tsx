@@ -1,10 +1,8 @@
-import { FC, InputHTMLAttributes } from "react";
-import styled from "styled-components";
+import React, { FC, InputHTMLAttributes } from 'react';
+import styled from 'styled-components';
 
-type InputType = {
-} & InputHTMLAttributes<HTMLInputElement>
 
-const Input: FC<InputType> = ({ ...props }) => {
+const Input: FC<InputHTMLAttributes<HTMLInputElement>> = ({ ...props }) => {
   return (
     <Root {...props}/>
   );

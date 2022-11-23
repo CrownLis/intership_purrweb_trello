@@ -1,13 +1,13 @@
-import { FC } from "react";
-import styled from "styled-components";
-import { getColumns } from "../../store/ducks/columns/selectors";
-import { useAppSelector } from "../../store/hooks";
-import Column from "../Column/Column";
+import React, { FC } from 'react';
+import styled from 'styled-components';
+import { rootSelectors } from '../../store/ducks';
+import { useAppSelector } from '../../store/hooks';
+import Column from '../Column/Column';
 
 
 const Body: FC = () => {
 
-    const columns = useAppSelector(getColumns);
+    const columns = useAppSelector(rootSelectors.columns.selectorGetColumns);
     return (
         <StyledDesk>
             {columns?.map(item =>

@@ -1,10 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { Provider } from "react-redux";
-import { createGlobalStyle } from "styled-components";
-import { persistor, store } from "./store/store";
-import App from "./App";
-import { PersistGate } from "redux-persist/integration/react";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { createGlobalStyle } from 'styled-components';
+import { persistor, store } from './store/store';
+import App from './App';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const GlobalStyle = createGlobalStyle`
 
@@ -33,7 +33,7 @@ span {
 `;
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.Fragment>

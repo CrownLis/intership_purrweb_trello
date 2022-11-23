@@ -1,14 +1,14 @@
-import { FC } from "react";
-import { useForm } from "react-hook-form";
-import styled from "styled-components";
-import { setUser } from "../../store/ducks/user/userSlice";
-import { useAppDispatch } from "../../store/hooks";
-import { UserType } from "../../Types/types";
-import Button from "../../UIComponents/Button";
-import ModalWindow from "../../UIComponents/ModalWindow/ModalWindow";
+import React, { FC } from 'react';
+import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
+import { rootActions } from '../../store/ducks';
+import { useAppDispatch } from '../../store/hooks';
+import { UserType } from '../../Types/types';
+import Button from '../../UIComponents/Button';
+import ModalWindow from '../../UIComponents/ModalWindow/ModalWindow';
 
 type PopupProps = {
-    showPopup?: boolean;
+    showPopup: boolean;
     setShowPopup: (arg1: boolean) => void;
 };
 
@@ -19,32 +19,32 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup }) => {
 
 
     const { register, handleSubmit } = useForm<UserType>({
-        mode: "onSubmit",
-        reValidateMode: "onChange",
+        mode: 'onSubmit',
+        reValidateMode: 'onChange',
         defaultValues: {
-            name: ""
+            name: ''
         },
     });  
 
     const onSubmit = (data: UserType) => {
-        dispatch(setUser(data));
+        dispatch(rootActions.user.setUser(data));
         setShowPopup(false);
     };
 
     const onCloseModal = () => {
-        alert("Please enter the name");
+        alert('Please enter the name');
     };
 
     return (
-        <ModalWindow showPopup={showPopup} onClose={onCloseModal}>
+        <ModalWindow isShowPopup={showPopup} onClose={onCloseModal}>
             <FormStyled onSubmit={handleSubmit(onSubmit)}>
                 <LabelStyled htmlFor="name">Введите ваше имя</LabelStyled>
-                <StyledInput {...register("name",
+                <StyledInput {...register('name',
                     {
-                        required: "Please enter the name",
+                        required: 'Please enter the name',
                         minLength: {
                             value: 2,
-                            message: "Пожалуйста,введите корректное имя"
+                            message: 'Пожалуйста,введите корректное имя'
                         }
                     }
                 )} name="name" type='text' autoFocus />
@@ -68,10 +68,10 @@ align-items:center;
 padding:10px 20px;
 gap:10px;
 border: 2px solid gray;
-        transition: 0.6s all;
-        border-radius:10px;
-
+transition: 0.6s all;
+border-radius:10px;
 `;
+
 const LabelStyled = styled.label`
 font-size:24px;
 color:var(--darkest-color);

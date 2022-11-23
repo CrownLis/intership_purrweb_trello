@@ -1,10 +1,7 @@
-import { FC, TextareaHTMLAttributes } from "react";
-import styled from "styled-components";
+import React, { FC, TextareaHTMLAttributes } from 'react';
+import styled from 'styled-components';
 
-type TextAreaType = {
-} & TextareaHTMLAttributes<HTMLTextAreaElement>
-
-const TextArea: FC<TextAreaType> = ({...props}) => {
+const TextArea: FC<TextareaHTMLAttributes<HTMLTextAreaElement>> = ({...props}) => {
   return (
     <Root {...props}/>
   );
