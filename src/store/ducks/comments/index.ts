@@ -1,7 +1,5 @@
-import commentsSlice from "./commentsSlice";
-import * as commentsActions from "./commentsSlice";
-import * as commentsSelectors from "./selectors";
+import { reducer } from './Slice';
+import { actions } from './Slice';
+import * as selectors from './selectors';
 
-const commentsReducer = commentsSlice.reducer;
-
-export { commentsActions, commentsReducer, commentsSelectors };
+export { reducer, actions, selectors };

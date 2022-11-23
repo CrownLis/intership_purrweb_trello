@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CardType } from "./../../../Types/types";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { CardType } from '../../../Types/types';
 
 type CardsSliceType = {
   cards: CardType[] | null;
@@ -10,7 +10,7 @@ const initialState: CardsSliceType = {
 };
 
 const cardsSlice = createSlice({
-  name: "cardsSlice",
+  name: 'cardsSlice',
   initialState,
   reducers: {
     addCard(state, action: PayloadAction<CardType>) {
@@ -20,7 +20,7 @@ const cardsSlice = createSlice({
         state.cards = [action.payload];
       }
     },
-    removeCard(state, action: PayloadAction<CardType["id"]>) {
+    removeCard(state, action: PayloadAction<number>) {
       if (state.cards) {
         state.cards = state.cards.filter((item) => item.id !== action.payload);
       }
@@ -35,6 +35,4 @@ const cardsSlice = createSlice({
   }
 });
 
-export default cardsSlice;
-
-export const { addCard, removeCard, changeCard } = cardsSlice.actions;
+export const { reducer, actions } = cardsSlice;

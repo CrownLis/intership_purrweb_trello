@@ -1,7 +1,4 @@
-import columnsSlice from "./columnsSlice";
-import * as columnsActions from "./columnsSlice";
-import * as columnsSelectors from "./selectors";
+import { reducer, actions } from './Slice';
+import * as selectors from './selectors';
 
-const columnsReducer = columnsSlice.reducer;
-
-export { columnsActions, columnsReducer, columnsSelectors };
+export { actions, reducer, selectors };

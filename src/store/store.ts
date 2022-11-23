@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
 import {
   persistStore,
   persistReducer,
@@ -8,12 +8,12 @@ import {
   PERSIST,
   PURGE,
   REGISTER
-} from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import { rootReducer } from "./ducks";
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import { rootReducer } from './ducks';
 
 const persistConfig = {
-  key: "root",
+  key: 'root',
   storage
 };
 

@@ -1,22 +1,22 @@
-import { RootState } from "../../store";
-import { createSelector } from "@reduxjs/toolkit";
-import { CommentType } from "../../../Types/types";
+import { RootState } from '../../store';
+import { createSelector } from '@reduxjs/toolkit';
+import { CommentType } from '../../../Types/types';
 
-export const getComments = createSelector(
-  (state: RootState) => state,
-  (state) => state.comments.comments
-);
+export const selectorGetComments = 
+  (state: RootState) => {
+    return state.comments.comments;
+  };
 
-export const getCommentsByCardId = (
+export const selectorGetCommentsByCardId = (
   state: RootState,
-  id: CommentType["cardId"]
+  id: CommentType['cardId']
 ) => {
   return state.comments.comments?.filter((item) => item.cardId === id);
 };
 
-export const getCommentsCountByCardId = (
+export const selectorGetCommentsCountByCardId = (
   state: RootState,
-  id: CommentType["cardId"]
+  id: CommentType['cardId']
 ) => {
   return state.comments.comments?.filter((item) => item.cardId === id).length;
 };

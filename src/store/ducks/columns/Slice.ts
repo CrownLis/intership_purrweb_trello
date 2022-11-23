@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ColumnType } from "../../../Types/types";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ColumnType } from '../../../Types/types';
 
 type ColumnSliceType = {
   columns: ColumnType[] | null;
@@ -9,25 +9,25 @@ const initialState: ColumnSliceType = {
   columns: [
     {
       id: Number(new Date()) + 1,
-      name: "TODO"
+      name: 'TODO'
     },
     {
       id: Number(new Date()) + 2,
-      name: "In Progress"
+      name: 'In Progress'
     },
     {
       id: Number(new Date()) + 3,
-      name: "Testing"
+      name: 'Testing'
     },
     {
       id: Number(new Date()) + 4,
-      name: "Done"
+      name: 'Done'
     }
   ]
 };
 
 const columnsSlice = createSlice({
-  name: "columnsSlice",
+  name: 'columnsSlice',
   initialState,
   reducers: {
     changeColumn(state, action: PayloadAction<ColumnType>) {
@@ -40,6 +40,4 @@ const columnsSlice = createSlice({
   }
 });
 
-export default columnsSlice;
-
-export const { changeColumn } = columnsSlice.actions;
+export const { actions, reducer } = columnsSlice;

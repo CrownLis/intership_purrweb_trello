@@ -1,7 +1,5 @@
-import userSlice from "./userSlice";
-import * as userActions from "./userSlice";
-import * as userSelectors from "./selectors";
+import { reducer } from './Slice';
+import { actions } from './Slice';
+import * as selectors from './selectors';
 
-const userReducer = userSlice.reducer;
-
-export { userActions, userReducer, userSelectors };
+export { actions, reducer, selectors };

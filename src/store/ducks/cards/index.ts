@@ -1,7 +1,4 @@
-import cardsSlice from "./cardsSlice";
-import * as cardsActions from "./cardsSlice";
-import * as cardsSelectors from "./selectors";
+import { reducer, actions } from './Slice';
+import * as selectors from './selectors';
 
-const cardsReducer = cardsSlice.reducer;
-
-export { cardsActions, cardsReducer, cardsSelectors };
+export { reducer, actions, selectors };

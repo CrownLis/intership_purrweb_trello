@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CommentType } from "../../../Types/types";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { CommentType } from '../../../Types/types';
 
 type CommeentsSliceType = {
   comments: CommentType[] | null;
@@ -10,7 +10,7 @@ const initialState: CommeentsSliceType = {
 };
 
 const commentsSlice = createSlice({
-  name: "commentsSlice",
+  name: 'commentsSlice',
   initialState,
   reducers: {
     addComment(state, action: PayloadAction<CommentType>) {
@@ -20,14 +20,14 @@ const commentsSlice = createSlice({
         state.comments = [action.payload];
       }
     },
-    removeComment(state, action: PayloadAction<CommentType["id"]>) {
+    removeComment(state, action: PayloadAction<CommentType['id']>) {
       if (state.comments) {
         state.comments = state.comments?.filter(
           (item) => item.id !== action.payload
         );
       }
     },
-    removeAllCommentsCard(state, action: PayloadAction<CommentType["cardId"]>) {
+    removeAllCommentsCard(state, action: PayloadAction<CommentType['cardId']>) {
       if (state.comments) {
         state.comments = state.comments.filter(
           (item) => item.cardId !== action.payload
@@ -42,11 +42,4 @@ const commentsSlice = createSlice({
   }
 });
 
-export default commentsSlice;
-
-export const {
-  addComment,
-  removeComment,
-  removeAllCommentsCard,
-  changeComment
-} = commentsSlice.actions;
+export const { actions, reducer } = commentsSlice;
