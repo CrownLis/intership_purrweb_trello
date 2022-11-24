@@ -32,8 +32,8 @@ const columnsSlice = createSlice({
   reducers: {
     changeColumn(state, action: PayloadAction<ColumnType>) {
       if (state.columns) {
-        state.columns = state.columns?.map((item) =>
-          item.id === action.payload.id ? action.payload : item
+        state.columns = state.columns?.map((column) =>
+        column.id === action.payload.id ? action.payload : column
         );
       }
     }
