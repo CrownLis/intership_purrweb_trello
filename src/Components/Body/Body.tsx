@@ -7,13 +7,13 @@ import Column from '../Column/Column';
 
 const Body: FC = () => {
 
-    const columns = useAppSelector(rootSelectors.columns.selectorGetColumns);
+    const columns = useAppSelector(rootSelectors.columns.selectColumns);
     return (
         <StyledDesk>
-            {columns?.map(item =>
+            {columns?.map(column =>
                 <Column
-                    key={item.id}
-                    data={item}
+                    key={column.id}
+                    data={column}
                 />)}
         </StyledDesk>
     );

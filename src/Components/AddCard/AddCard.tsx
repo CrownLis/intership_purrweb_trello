@@ -15,7 +15,7 @@ type ColumnProps = {
 
 const AddCard: FC<ColumnProps> = ({ columnId, show, setShow }) => {
 
-    const user = useAppSelector(rootSelectors.user.selectorGetUser);
+    const user = useAppSelector(rootSelectors.user.selectUser);
     const dispatch = useAppDispatch();
     const { register, handleSubmit, reset } = useForm<CardType>({
 

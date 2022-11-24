@@ -1,28 +1,19 @@
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import { rootActions,rootSelectors } from '../../../store/ducks/index';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { CommentType } from '../../../Types/types';
-import Button from '../../../UIComponents/Button';
+import { rootActions,rootSelectors } from '../../../../store/ducks/index';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { CommentType } from '../../../../Types/types';
+import Button from '../../../../UIComponents/Button';
 
 type CommentProps = {
     comment: CommentType,
 }
 
-type TextAreaProps = {
-    isEdit: boolean
-}
-
-
-type ButtonProps = {
-    hidden?: boolean
-}
-
 const CommentArea: FC<CommentProps> = ({ comment }) => {
 
     const [isEdit, setIsEdit] = useState(false);
-    const user = useAppSelector(rootSelectors.user.selectorGetUser);
+    const user = useAppSelector(rootSelectors.user.selectUser);
     const isAuthor = user?.name === comment.author;
     const dispatch = useAppDispatch();
 
@@ -38,6 +29,7 @@ const CommentArea: FC<CommentProps> = ({ comment }) => {
     });
 
     const onSubmit = (data: CommentType) => {
+        console.log(data);
         dispatch(rootActions.comments.changeComment(data));
         setIsEdit(false);
     };
@@ -46,7 +38,7 @@ const CommentArea: FC<CommentProps> = ({ comment }) => {
         <Root>
             <TitleComment>{user?.name}</TitleComment>
             <CommentForm onSubmit={handleSubmit(onSubmit)}>
-                <StyledTextComment isEdit={isEdit} {...register('text',
+                <StyledTextComment $isEdit={isEdit} {...register('text',
                     {
                         required: 'Please enter the comment',
                         minLength: {
@@ -56,13 +48,13 @@ const CommentArea: FC<CommentProps> = ({ comment }) => {
                     }
                 )}
 
-                    readOnly={isEdit ? false : true} />
+                   name='text' readOnly={isEdit ? false : true} />
                 {isAuthor ?
                     <ButtonContainer>
-                        <StyledButton hidden={isEdit} onClick={() => setIsEdit(true)} type='button'>
+                        <StyledButton $isHidden={isEdit} onClick={() => setIsEdit(true)} type='button'>
                             Редактировать комментарий
                         </StyledButton>
-                        <StyledButton hidden={!isEdit} type='submit'>
+                        <StyledButton $isHidden={!isEdit} type='submit'>
                             Сохранить изменения
                         </StyledButton>
                         <StyledButton onClick={() => dispatch(rootActions.comments.removeComment(comment.id))}>
@@ -76,6 +68,15 @@ const CommentArea: FC<CommentProps> = ({ comment }) => {
 };
 
 export default CommentArea;
+
+type TextAreaProps = {
+    $isEdit: boolean
+}
+
+
+type ButtonProps = {
+    $isHidden?: boolean
+}
 
 const Root = styled.div`
 display:flex;
@@ -107,10 +108,10 @@ padding:4px;
 outline:none;
 margin:0 20px;
 resize:none;
-border: ${props => props.isEdit ? '2px solid var(--dark-color)' : '2px solid transparent'};
+border: ${props => props.$isEdit ? '2px solid var(--dark-color)' : '2px solid transparent'};
 `;
 
 const StyledButton = styled(Button) <ButtonProps>`
     margin:10px 20px;
-    display:${props => props.hidden ? 'none' : 'block'}
+    display:${props => props.$isHidden ? 'none' : 'block'}
 `;

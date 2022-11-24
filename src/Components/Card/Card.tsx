@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { CardType, ColumnType, CommentType } from '../../Types/types';
 import Button from '../../UIComponents/Button';
 import ModalWindow from '../../UIComponents/ModalWindow/ModalWindow';
-import CommentArea from './CommentArea/CommentArea';
+import {CommentArea} from './components';
 
 type CardProps = {
     columnName: ColumnType['name']
@@ -14,21 +14,12 @@ type CardProps = {
     onClose: () => void,
 }
 
-type EditProps = {
-    editNow: boolean
-}
-
-type ButtonProps = {
-    hidden?: boolean
-}
-
 const Card: FC<CardProps> = ({ data, onClose, columnName }) => {
 
     const [isEdit, setIsEdit] = useState(false);
-    const comments = useAppSelector((state) => rootSelectors.comments.selectorGetCommentsByCardId(state, data.id));
-    const user = useAppSelector(rootSelectors.user.selectorGetUser);
+    const comments = useAppSelector((state) => rootSelectors.comments.selectCommentsByCardId(state, data.id));
+    const user = useAppSelector(rootSelectors.user.selectUser);
     const isAuthor = user?.name === data.author;
-    const hidden = !isEdit;
     const dispatch = useAppDispatch();
 
     const { register: cardRegister, handleSubmit: handleCardSubmit } = useForm<CardType>({
@@ -60,6 +51,7 @@ const Card: FC<CardProps> = ({ data, onClose, columnName }) => {
     };
 
     const endEdit = (data: CardType) => {
+        console.log(data);
         dispatch(rootActions.cards.changeCard(data));
         setIsEdit(false);
     };
@@ -78,7 +70,7 @@ const Card: FC<CardProps> = ({ data, onClose, columnName }) => {
                 </CancelButton>
                 <CardForm onSubmit={handleCardSubmit(endEdit)}>
                     <CardHeader>
-                        <StyledInput editNow={isEdit} {...cardRegister('name',
+                        <StyledInput $isEditNow={isEdit} {...cardRegister('name',
                             {
                                 required: 'Please enter the card name',
                                 minLength: {
@@ -96,21 +88,21 @@ const Card: FC<CardProps> = ({ data, onClose, columnName }) => {
                     </CardHeader>
                     <CardDescription>
                         <StyledTitle>Description</StyledTitle>
-                        <StyledDescription editNow={isEdit} {...cardRegister('description',
+                        <StyledDescription $isEditNow={isEdit} {...cardRegister('description',
                             {
-                                required: 'Please enter the column description',
+                                required: 'Please enter the card description',
                                 minLength: {
                                     value: 1,
-                                    message: 'Please enter the column description'
+                                    message: 'Please enter the card description'
                                 }
                             }
-                        )} name="firstName" readOnly={!isEdit} />
+                        )} name="description" readOnly={!isEdit} />
                         {isAuthor ?
                             <ButtonContainer>
-                                <StyledButton hidden={!hidden} onClick={() => setIsEdit(true)} type='button'>
+                                <StyledButton $isHidden={isEdit} onClick={() => setIsEdit(true)} type='button'>
                                     Изменить карточку
                                 </StyledButton>
-                                <StyledButton hidden={hidden} type='submit'>
+                                <StyledButton $isHidden={!isEdit} type='submit'>
                                     Сохранить изменения
                                 </StyledButton>
                                 <StyledButton onClick={() => deleteCard()}>
@@ -133,8 +125,8 @@ const Card: FC<CardProps> = ({ data, onClose, columnName }) => {
                         )} />
                         <StyledButton type='submit'>Добавить комментарий</StyledButton>
                     </StyledForm>
-                    {comments?.map(item =>
-                        <CommentArea key={item.id} comment={item} />
+                    {comments?.map(comment =>
+                        <CommentArea key={comment.id} comment={comment} />
                     )}
                 </CommentsContainer>
             </StyledContainer>
@@ -143,6 +135,14 @@ const Card: FC<CardProps> = ({ data, onClose, columnName }) => {
 };
 
 export default Card;
+
+type ButtonProps = {
+    $isHidden?: boolean
+}
+
+type EditProps = {
+    $isEditNow: boolean
+}
 
 const StyledContainer = styled.div`
 display:flex;
@@ -194,9 +194,9 @@ const StyledDescription = styled.textarea<EditProps>`
 flex-grow:1;
 resize:none;
 margin:0 20px;
-border: ${props => props.editNow ? '2px solid var(--darkest-color)' : '2px solid transparent'};
+border: ${props => props.$isEditNow ? '2px solid var(--darkest-color)' : '2px solid transparent'};
 color:var(--darkest-color);
-background-color:${props => props.editNow ? 'var(--light-color)' : 'transparent'};
+background-color:${props => props.$isEditNow ? 'var(--light-color)' : 'transparent'};
 border-radius:10px;
 min-height:60px;
 outline:none;
@@ -208,8 +208,8 @@ height:50%;
 `;
 
 const StyledInput = styled.input<EditProps>`
-border: ${props => props.editNow ? '2px solid var(--darkest-color)' : '2px solid transparent'};
-background-color:${props => props.editNow ? 'var(--light-color)' : 'transparent'};
+border: ${props => props.$isEditNow ? '2px solid var(--darkest-color)' : '2px solid transparent'};
+background-color:${props => props.$isEditNow ? 'var(--light-color)' : 'transparent'};
 font-weight:bold;
 border-radius:6px;
 margin:20px;
@@ -248,7 +248,7 @@ const StyledButton = styled(Button) <ButtonProps>`
     background-color:var(--dark-color);
     border:2px solid var(--darkest-color);
     color: var(--primary-color);
-    display:${props => props.hidden ? 'none' : 'block'};
+    display:${props => props.$isHidden ? 'none' : 'block'};
 `;
 
 const StyledForm = styled.form`

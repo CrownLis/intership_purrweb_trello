@@ -9,7 +9,7 @@ import styled from 'styled-components';
 const App:FC = () => {
 
   const [showPopup, setShowPopup] = useState<boolean>(false);
-  const user = useAppSelector(rootSelectors.user.selectorGetUser);
+  const user = useAppSelector(rootSelectors.user.selectUser);
 
   useEffect(() => {
     if (!user) {
@@ -21,7 +21,7 @@ const App:FC = () => {
       <Root>
         <Header />
         <Body />
-        <Popup showPopup={showPopup} setShowPopup={setShowPopup} />
+        <Popup isShowPopup={showPopup} setShowPopup={setShowPopup} />
       </Root >
   );
 };
