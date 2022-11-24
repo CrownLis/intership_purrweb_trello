@@ -22,13 +22,13 @@ const cardsSlice = createSlice({
     },
     removeCard(state, action: PayloadAction<number>) {
       if (state.cards) {
-        state.cards = state.cards.filter((item) => item.id !== action.payload);
+        state.cards = state.cards.filter((card) => card.id !== action.payload);
       }
     },
     changeCard(state, action: PayloadAction<CardType>) {
       if (state.cards) {
-        state.cards = state.cards?.map((item) =>
-          item.id === action.payload.id ? action.payload : item
+        state.cards = state.cards?.map((card) =>
+          card.id === action.payload.id ? action.payload : card
         );
       }
     }

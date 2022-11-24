@@ -1,17 +1,14 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { CardType } from '../../../Types/types';
 import { RootState } from '../../store';
 
+const selectCards = (state: RootState) => state.cards.cards;
+const selectColumnId = (_: RootState, columnId: number) => columnId;
 
-
-export const selectorGetCards = createSelector(
-  (state: RootState) => state,
-  (state) => state.cards.cards
-);
-
-export const selectorGetCardsByColumnId = (
-  state: RootState,
-  columnId: CardType['columnId']
-) => {
-  return state.cards.cards?.filter((item) => item.columnId === columnId);
+export const selectGetCards = (state: RootState) => {
+  return state.cards.cards;
 };
+
+export const selectCardsByColumnId = createSelector(
+  [selectCards, selectColumnId],
+  (cards, columnId) => cards?.filter((card) => card.columnId === columnId)
+);
