@@ -15,7 +15,7 @@ const commentsSlice = createSlice({
   reducers: {
     addComment(state, action: PayloadAction<CommentType>) {
       if (state.comments) {
-        state.comments = [...state.comments, action.payload];
+        state.comments = [action.payload,...state.comments];
       } else {
         state.comments = [action.payload];
       }
@@ -35,9 +35,11 @@ const commentsSlice = createSlice({
       }
     },
     changeComment(state, action: PayloadAction<CommentType>) {
-      state.comments?.map((item) =>
-        item.id === action.payload.id ? action.payload : item
-      );
+      if (state.comments) {
+        state.comments = state.comments?.map((item) =>
+          item.id === action.payload.id ? action.payload : item
+        );
+      }
     }
   }
 });

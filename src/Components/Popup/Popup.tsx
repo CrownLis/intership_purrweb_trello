@@ -8,11 +8,11 @@ import Button from '../../UIComponents/Button';
 import ModalWindow from '../../UIComponents/ModalWindow/ModalWindow';
 
 type PopupProps = {
-    showPopup: boolean;
+    isShowPopup: boolean;
     setShowPopup: (arg1: boolean) => void;
 };
 
-const Popup: FC<PopupProps> = ({ showPopup, setShowPopup }) => {
+const Popup: FC<PopupProps> = ({ isShowPopup, setShowPopup }) => {
 
     const dispatch = useAppDispatch();
 
@@ -36,7 +36,7 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup }) => {
     };
 
     return (
-        <ModalWindow isShowPopup={showPopup} onClose={onCloseModal}>
+        <ModalWindow isShowPopup={isShowPopup} onClose={onCloseModal}>
             <FormStyled onSubmit={handleSubmit(onSubmit)}>
                 <LabelStyled htmlFor="name">Введите ваше имя</LabelStyled>
                 <StyledInput {...register('name',

@@ -5,7 +5,7 @@ import { useAppSelector } from '../../store/hooks';
 
 const Header: FC = () => {
 
-const user = useAppSelector(rootSelectors.user.selectorGetUser);
+const user = useAppSelector(rootSelectors.user.selectUser);
 
     return (
         <Root>

@@ -1,22 +1,18 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../UIComponents/Button';
-import AddCard from '../AddCard/AddCard';
-import Card from '../Card/Card';
+import AddCard from '../AddCard';
+import Card from '../Card';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useForm } from 'react-hook-form';
 import { CardType, ColumnType } from '../../Types/types';
 import { rootActions, rootSelectors } from '../../store/ducks';
 import EditIcon from './../../assets/editIcon.png';
 import SaveIcon from './../../assets/saveIcon.png';
-import CardInfo from './CardInfo/CardInfo';
+import { CardInfo } from './components';
 
 type ColumnProps = {
     data: ColumnType
-}
-
-type ButtonProps = {
-    hidden: boolean
 }
 
 const Column: FC<ColumnProps> = ({ data }) => {
@@ -34,7 +30,7 @@ const Column: FC<ColumnProps> = ({ data }) => {
         },
     });
 
-    const cards = useAppSelector((state) => rootSelectors.cards.selectorGetCardsByColumnId(state, data.id));
+    const cards = useAppSelector((state) => rootSelectors.cards.selectCardsByColumnId(state, data.id));
     const onSubmit = (values: ColumnType) => {
         dispatch(rootActions.columns.changeColumn(values));
         setIsEdit(false);
@@ -52,8 +48,8 @@ const Column: FC<ColumnProps> = ({ data }) => {
                         }
                     }
                 )} readOnly={!isEdit} />
-                <IconButton hidden={!isEdit} type='submit'><SaveImage src={SaveIcon} /> </IconButton>
-                <IconButton hidden={isEdit} type='button'><ImageTitle src={EditIcon} onClick={() => setIsEdit(true)} /></IconButton>
+                <IconButton $isHidden={!isEdit} type='submit'><SaveImage src={SaveIcon} /> </IconButton>
+                <IconButton $isHidden={isEdit} type='button'><ImageTitle src={EditIcon} onClick={() => setIsEdit(true)} /></IconButton>
             </TitleColumn>
             <CardsConitaner>
                 {activeCard ?
@@ -63,10 +59,10 @@ const Column: FC<ColumnProps> = ({ data }) => {
                         onClose={() => setActiveCard(null)}
                     /> : null}
 
-                {cards?.map(item => {
+                {cards?.map(card => {
                     return (
-                        <StyledCard key={item.id}>
-                            <CardInfo onClick={() => setActiveCard(item)} data={item} />
+                        <StyledCard key={card.id}>
+                            <CardInfo onClick={() => setActiveCard(card)} data={card} />
                         </StyledCard>
                     );
                 }
@@ -84,6 +80,10 @@ const Column: FC<ColumnProps> = ({ data }) => {
 
 export default Column;
 
+type ButtonProps = {
+    $isHidden: boolean
+}
+
 const IconButton = styled(Button) <ButtonProps>`
 max-width:100%;
 max-height:100%;
@@ -91,7 +91,7 @@ background-color:transparent;
 padding:0;
 margin:0;
 border:0px;
-display:${props => props.hidden ? 'none' : 'block'};
+display:${props => props.$isHidden ? 'none' : 'block'};
 &:hover {
     box-shadow:0 0 0;
 }
